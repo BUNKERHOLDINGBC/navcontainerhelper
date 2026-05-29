@@ -46,28 +46,7 @@ function Sort-AppFilesByDependencies {
         $appFiles | ForEach-Object {
             $appFile = $_
             $includeIt = $true
-            $tmpFolder = Join-Path ([System.IO.Path]::GetTempPath()) ([Guid]::NewGuid().ToString())
-            try {
-                Extract-AppFileToFolder -appFilename $appFile -appFolder $tmpFolder -generateAppJson 6> $null
-                $appJsonFile = Join-Path $tmpFolder "app.json"
-                $appJson = [System.IO.File]::ReadAllLines($appJsonFile) | ConvertFrom-Json
-            }
-            catch {
-                if ($_.exception.message -eq "You cannot extract a runtime package") {
-                    if ($excludeRuntimePackages) {
-                        $includeIt = $false
-                    }
-                    else {
-                        $appJson = Get-AppJsonFromAppFile -appFile $appFile
-                    }
-                }
-                else {
-                    throw "Unable to extract and analyze appFile $appFile"
-                }
-            }
-            finally {
-                Remove-Item $tmpFolder -Recurse -Force -ErrorAction SilentlyContinue
-            }
+            $appJson = Get-AppJsonFromAppFile -appFile $appFile
             if ($includeIt) {
                 $key = "$($appJson.Id):$($appJson.Version)"
                 if (-not $files.ContainsKey($key)) {
