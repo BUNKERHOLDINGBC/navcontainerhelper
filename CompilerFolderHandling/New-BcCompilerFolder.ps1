@@ -306,10 +306,10 @@ try {
             # New VSIX layout (flat bin/) or old layout needing runtimeconfig patching
             Write-Host "New VSIX layout detected or old layout needing runtimeconfig patching"
             $alcConfigPath = Join-Path $containerCompilerPath 'extension/bin/win32/alc.runtimeconfig.json'
-            if (-not (Test-Path $alcConfigPath)) {
-                Write-Host "alc.runtimeconfig.json not found in win32 subdirectory, checking flat bin/ directory"
-                $alcConfigPath = Join-Path $containerCompilerPath 'extension/bin/alc.runtimeconfig.json'
-            }
+#            if (-not (Test-Path $alcConfigPath)) {
+#                Write-Host "alc.runtimeconfig.json not found in win32 subdirectory, checking flat bin/ directory"
+#                $alcConfigPath = Join-Path $containerCompilerPath 'extension/bin/alc.runtimeconfig.json'
+#            }
             if (Test-Path $alcConfigPath) {
                 Write-Host "Found alc.runtimeconfig.json at $alcConfigPath"
                 $oldAlcConfig = Get-Content -Path $alcConfigPath -Encoding UTF8 | ConvertFrom-Json
