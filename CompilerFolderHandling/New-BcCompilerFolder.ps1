@@ -278,27 +278,36 @@ try {
 
         if (Test-Path $alcExePath) {
             # Old VSIX layout with platform-specific subdirs
+            Write-Host "Old VSIX layout detected: platform-specific subdirectories exist"
             if (Test-Path $alToolExePath) {
                 # Set execute permissions on altool
+                Write-Host "Setting execute permissions on altool"
                 if ($isLinux) {
+                    Write-Host "Setting execute permissions on altool for Linux"
                     & /usr/bin/env sudo pwsh -command "& chmod +x $alToolExePath"
                 } else {
+                    Write-Host "Setting execute permissions on altool for macOS"
                     & chmod +x $alToolExePath
                 }
             }
             # Set execute permissions on alc
             if ($isLinux) {
+                Write-Host "Setting execute permissions on alc for Linux"
                 & /usr/bin/env sudo pwsh -command "& chmod +x $alcExePath"
             } else {
+                Write-Host "Setting execute permissions on alc for macOS"
                 & chmod +x $alcExePath
             }
         } else {
             # New VSIX layout (flat bin/) or old layout needing runtimeconfig patching
+            Write-Host "New VSIX layout detected or old layout needing runtimeconfig patching"
             $alcConfigPath = Join-Path $containerCompilerPath 'extension/bin/win32/alc.runtimeconfig.json'
             if (-not (Test-Path $alcConfigPath)) {
+                Write-Host "alc.runtimeconfig.json not found in win32 subdirectory, checking flat bin/ directory"
                 $alcConfigPath = Join-Path $containerCompilerPath 'extension/bin/alc.runtimeconfig.json'
             }
             if (Test-Path $alcConfigPath) {
+                Write-Host "Found alc.runtimeconfig.json at $alcConfigPath"
                 $oldAlcConfig = Get-Content -Path $alcConfigPath -Encoding UTF8 | ConvertFrom-Json
                 if ($oldAlcConfig.runtimeOptions.PSObject.Properties.Name -eq 'includedFrameworks') {
                     # Old self-contained VSIX: patch runtimeconfig for Linux/macOS
@@ -317,6 +326,7 @@ try {
                     }
                     $newAlcConfig | ConvertTo-Json | Set-Content -Path $alcConfigPath -Encoding utf8NoBOM
                 }
+                Write-Host "Finished processing alc.runtimeconfig.json"
                 # else: new framework-dependent VSIX already has "framework" key, no patching needed
             }
         }
