@@ -276,10 +276,6 @@ try {
         $alcExePath = Join-Path $containerCompilerPath "extension/bin/$($compilerPlatform)/alc"
         $alToolExePath = Join-Path $containerCompilerPath "extension/bin/$($compilerPlatform)/altool"
 
-        $binFolder = Join-Path $containerCompilerPath "extension/bin"
-        Write-Host "Files in $binFolder"
-        Get-ChildItem -Path $binFolder -Recurse -File | ForEach-Object { Write-Host "- $($_.FullName)" }
-
         if (Test-Path $alcExePath) {
             # Old VSIX layout with platform-specific subdirs
             Write-Host "Old VSIX layout detected: platform-specific subdirectories exist"

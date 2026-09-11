@@ -366,9 +366,14 @@ function Compile-AppWithBcCompilerFolder {
             ($isMacOS) { $compilerPlatform = 'darwin' }
         }
         $alcPath = Join-Path $binPath $compilerPlatform
-        if (-not (Test-Path $alcPath)) {
+        if (-not (Test-Path "$alcPath/alc.*")) {
             $alcPath = $binPath
         }
+
+        Write-Host "Using alc path: $alcPath"
+        Write-Host "Compiler platform: $compilerPlatform"
+        Write-Host "Files in $binPath"
+        Get-ChildItem -Path $binPath -Recurse -File | ForEach-Object { Write-Host "- $($_.FullName)" }
 
         $alcExe = 'alc.exe'
         $alcCmd = ".\$alcExe"
