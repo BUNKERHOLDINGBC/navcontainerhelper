@@ -1126,7 +1126,7 @@ function GetAppInfo {
     $alToolDll = ''
     if ($isLinux) {
         $alcPath = Join-Path $binPath 'linux'
-        if (-not (Test-Path $alcPath)) { $alcPath = $binPath }
+        if (-not (Test-Path "$alcPath/alc.*")) { $alcPath = $binPath }
         $command = Join-Path $alcPath 'altool'
         if (Test-Path $command) {
             Write-Host "Use $command as altool executable."
@@ -1142,7 +1142,7 @@ function GetAppInfo {
     }
     elseif ($isMacOS) {
         $alcPath = Join-Path $binPath 'darwin'
-        if (-not (Test-Path $alcPath)) { $alcPath = $binPath }
+        if (-not (Test-Path "$alcPath/alc.*")) { $alcPath = $binPath }
         $command = Join-Path $alcPath 'altool'
         if (Test-Path $command) {
             Write-Host "Use $command as altool executable."
