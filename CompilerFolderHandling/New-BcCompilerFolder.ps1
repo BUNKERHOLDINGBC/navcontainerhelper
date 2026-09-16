@@ -317,7 +317,6 @@ try {
                     }
                     $newAlcConfig | ConvertTo-Json | Set-Content -Path $alcConfigPath -Encoding utf8NoBOM
                 }
-                Write-Host "Finished processing alc.runtimeconfig.json"
                 # else: new framework-dependent VSIX already has "framework" key, no patching needed
             }
         }
