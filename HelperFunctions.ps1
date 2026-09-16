@@ -1158,7 +1158,7 @@ function GetAppInfo {
     }
     else {
         $alcPath = Join-Path $binPath 'win32'
-        if (-not (Test-Path $alcPath)) { $alcPath = $binPath }
+        if (-not (Test-Path "$alcPath/alc.*")) { $alcPath = $binPath }
         $command = Join-Path $alcPath 'altool.exe'
         $alToolExists = Test-Path -Path $command -PathType Leaf
         Write-Host "Use $command as altool executable (Exists = $alToolExists)."

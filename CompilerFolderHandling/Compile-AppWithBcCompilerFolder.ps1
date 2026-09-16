@@ -370,11 +370,6 @@ function Compile-AppWithBcCompilerFolder {
             $alcPath = $binPath
         }
 
-        Write-Host "Using alc path: $alcPath"
-        Write-Host "Compiler platform: $compilerPlatform"
-        Write-Host "Files in $binPath"
-        Get-ChildItem -Path $binPath -Recurse -File | ForEach-Object { Write-Host "- $($_.FullName)" }
-
         $alcExe = 'alc.exe'
         $alcCmd = ".\$alcExe"
         if ($isLinux -or $isMacOS) {
