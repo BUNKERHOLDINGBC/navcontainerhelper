@@ -47,6 +47,18 @@ function Sort-AppFilesByDependencies {
             $appFile = $_
             $includeIt = $true
             $appJson = Get-AppJsonFromAppFile -appFile $appFile
+            if ($excludeRuntimePackages.IsPresent) {
+                # Only check for runtime package if it matters
+                try {
+                    RunAlTool -arguments @('IsRuntimePackage', """$appFile""") | Out-Null
+                    # If the above command succeeds, it means the app is a runtime package
+                    $includeIt = $false
+                }
+                catch {
+                    # We were already able to get the AppJson, so the failure must be because the app is not a runtime package
+                    $includeIt = $true
+                }
+            }
             if ($includeIt) {
                 $key = "$($appJson.Id):$($appJson.Version)"
                 if (-not $files.ContainsKey($key)) {
